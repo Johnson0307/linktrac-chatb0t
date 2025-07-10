@@ -85,6 +85,36 @@ class AsaasService:
         self.base_url = ASAAS_BASE_URL
         self.headers = {"access_token": self.api_key}
     
+    async def find_customer_by_cpf_cnpj(self, cpf_cnpj: str):
+        """Find customer by CPF/CNPJ"""
+        async with httpx.AsyncClient() as client:
+            try:
+                response = await client.get(
+                    f"{self.base_url}/customers",
+                    params={"cpfCnpj": cpf_cnpj},
+                    headers=self.headers
+                )
+                if response.status_code == 200:
+                    data = response.json()
+                    if data.get("data") and len(data["data"]) > 0:
+                        return data["data"][0]  # Return first customer found
+                    else:
+                        return None
+                else:
+                    return None
+            except Exception as e:
+                return None
+    
+    async def consult_debt_by_cpf_cnpj(self, cpf_cnpj: str):
+        """Consult debt by CPF/CNPJ"""
+        # First find customer
+        customer = await self.find_customer_by_cpf_cnpj(cpf_cnpj)
+        if not customer:
+            return {"error": "Cliente não encontrado com este CPF/CNPJ"}
+        
+        # Then get their debts
+        return await self.consult_debt(customer["id"])
+    
     async def consult_debt(self, customer_id: str):
         async with httpx.AsyncClient() as client:
             try:
@@ -100,29 +130,16 @@ class AsaasService:
             except Exception as e:
                 return {"error": f"Erro na consulta: {str(e)}"}
     
-    async def generate_boleto(self, payment_data: dict):
-        async with httpx.AsyncClient() as client:
-            try:
-                boleto_data = {
-                    "customer": payment_data["customer_id"],
-                    "billingType": "BOLETO",
-                    "value": payment_data["value"],
-                    "dueDate": payment_data["due_date"],
-                    "description": payment_data["description"]
-                }
-                
-                response = await client.post(
-                    f"{self.base_url}/payments",
-                    json=boleto_data,
-                    headers=self.headers
-                )
-                
-                if response.status_code == 200:
-                    return response.json()
-                else:
-                    return {"error": "Erro ao gerar boleto"}
-            except Exception as e:
-                return {"error": f"Erro na geração do boleto: {str(e)}"}
+    async def generate_boleto_by_cpf_cnpj(self, cpf_cnpj: str, payment_data: dict):
+        """Generate boleto by CPF/CNPJ"""
+        # First find or create customer
+        customer = await self.find_customer_by_cpf_cnpj(cpf_cnpj)
+        if not customer:
+            return {"error": "Cliente não encontrado com este CPF/CNPJ"}
+        
+        # Generate boleto for this customer
+        payment_data["customer_id"] = customer["id"]
+        return await self.generate_boleto(payment_data)
 
 asaas_service = AsaasService()
 
