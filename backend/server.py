@@ -276,13 +276,13 @@ async def chat_endpoint(request: ChatRequest):
 @app.post("/api/consult-debt")
 async def consult_debt(request: DebtConsultationRequest):
     try:
-        # Consult debt via Asas API
-        debt_data = await asaas_service.consult_debt(request.customer_id)
+        # Consult debt via CPF/CNPJ
+        debt_data = await asaas_service.consult_debt_by_cpf_cnpj(request.cpf_cnpj)
         
         # Save consultation
         consultation = {
             "session_id": request.session_id,
-            "customer_id": request.customer_id,
+            "cpf_cnpj": request.cpf_cnpj,
             "debt_data": debt_data,
             "timestamp": datetime.utcnow()
         }
@@ -295,9 +295,8 @@ async def consult_debt(request: DebtConsultationRequest):
 @app.post("/api/generate-boleto")
 async def generate_boleto(request: BoletoRequest):
     try:
-        # Generate boleto via Asas API
-        boleto_data = await asaas_service.generate_boleto({
-            "customer_id": request.customer_id,
+        # Generate boleto via CPF/CNPJ
+        boleto_data = await asaas_service.generate_boleto_by_cpf_cnpj(request.cpf_cnpj, {
             "value": request.value,
             "due_date": request.due_date,
             "description": request.description
@@ -306,7 +305,7 @@ async def generate_boleto(request: BoletoRequest):
         # Save boleto generation
         boleto_record = {
             "session_id": request.session_id,
-            "customer_id": request.customer_id,
+            "cpf_cnpj": request.cpf_cnpj,
             "value": request.value,
             "due_date": request.due_date,
             "description": request.description,
