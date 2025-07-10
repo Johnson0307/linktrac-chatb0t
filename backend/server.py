@@ -217,14 +217,14 @@ class ChatBot:
         # Financial operations
         if "consultar débitos" in message_lower or "consulta" in message_lower:
             return ChatResponse(
-                response="📊 **Consulta de Débitos**\n\nPor favor, informe seu ID de cliente para consultar os débitos.",
+                response="📊 **Consulta de Débitos**\n\nPor favor, informe seu **CPF ou CNPJ** para consultar os débitos.",
                 department="financeiro_consulta",
                 options=["🔙 Voltar ao Financeiro"]
             )
         
         if "gerar boleto" in message_lower:
             return ChatResponse(
-                response="📋 **Geração de Boleto**\n\nPara gerar um boleto, preciso das seguintes informações:\n• ID do Cliente\n• Valor\n• Data de Vencimento\n• Descrição",
+                response="📋 **Geração de Boleto**\n\nPara gerar um boleto, preciso das seguintes informações:\n• CPF ou CNPJ\n• Valor\n• Data de Vencimento\n• Descrição",
                 department="financeiro_boleto",
                 options=["🔙 Voltar ao Financeiro"]
             )
