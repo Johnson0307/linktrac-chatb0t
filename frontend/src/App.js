@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './App.css';
 
-const App = () => {
+const ChatBot = () => {
   const [messages, setMessages] = useState([]);
   const [inputMessage, setInputMessage] = useState('');
   const [sessionId] = useState(() => 'session_' + Date.now());
@@ -461,6 +461,93 @@ const App = () => {
           </div>
         </div>
       </div>
+    </div>
+  );
+};
+
+const LandingPage = () => {
+  return (
+    <div className="landing-page">
+      <div className="landing-container">
+        <div className="landing-header">
+          <img 
+            src="https://images.unsplash.com/photo-1679403766665-67ed6cd2df30?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2NzR8MHwxfHNlYXJjaHwxfHxjaGF0Ym90JTIwbG9nb3xlbnwwfHx8fDE3NTIxMTUyNjF8MA&ixlib=rb-4.1.0&q=85" 
+            alt="Linktrac Logo" 
+            className="landing-logo"
+          />
+          <h1>Linktrac Chatbot Suporte</h1>
+          <p>Seu assistente virtual para suporte, vendas e financeiro</p>
+        </div>
+        
+        <div className="landing-features">
+          <div className="feature-card">
+            <div className="feature-icon">💰</div>
+            <h3>Financeiro</h3>
+            <p>Consulte débitos e gere boletos automaticamente</p>
+          </div>
+          
+          <div className="feature-card">
+            <div className="feature-icon">🎯</div>
+            <h3>Vendas</h3>
+            <p>Fale diretamente com nossos vendedores</p>
+          </div>
+          
+          <div className="feature-card">
+            <div className="feature-icon">🛠️</div>
+            <h3>Suporte</h3>
+            <p>Suporte técnico disponível 24/7</p>
+          </div>
+        </div>
+        
+        <div className="landing-cta">
+          <button className="cta-button">
+            <span>🚀 Iniciar Conversa</span>
+          </button>
+          <p className="cta-subtitle">Clique no link acima para começar</p>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const App = () => {
+  const [showChatbot, setShowChatbot] = useState(false);
+  
+  // Check if URL has chatbot parameter
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('chat') === 'true') {
+      setShowChatbot(true);
+    }
+  }, []);
+  
+  const handleStartChat = () => {
+    // Update URL to include chat parameter
+    window.history.pushState({}, '', '?chat=true');
+    setShowChatbot(true);
+  };
+  
+  const handleBackToLanding = () => {
+    window.history.pushState({}, '', '/');
+    setShowChatbot(false);
+  };
+  
+  if (showChatbot) {
+    return (
+      <div>
+        <div className="back-button-container">
+          <button onClick={handleBackToLanding} className="back-button">
+            ← Voltar
+          </button>
+        </div>
+        <ChatBot />
+      </div>
+    );
+  }
+  
+  return (
+    <div onClick={handleStartChat}>
+      <LandingPage />
     </div>
   );
 };
