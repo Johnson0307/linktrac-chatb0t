@@ -142,15 +142,15 @@ class ChatBot:
                 options=["💰 Financeiro", "🎯 Vendas", "🛠️ Suporte", "📞 Contatos"]
             )
         
-        # Department routing
-        if "financeiro" in message_lower or "débito" in message_lower or "boleto" in message_lower:
+        # Department routing - check for exact matches first
+        if message_lower == "financeiro" or "💰 financeiro" in message_lower or "débito" in message_lower or "boleto" in message_lower:
             return ChatResponse(
                 response="💰 **Departamento Financeiro**\n\nEscolha uma opção:",
                 department="financeiro",
                 options=["📊 Consultar Débitos", "📋 Gerar Boleto", "🔙 Voltar ao Menu"]
             )
         
-        if "vendas" in message_lower or "produto" in message_lower or "serviço" in message_lower:
+        if message_lower == "vendas" or "🎯 vendas" in message_lower or "produto" in message_lower or "serviço" in message_lower:
             return ChatResponse(
                 response="🎯 **Departamento de Vendas**\n\nNossos vendedores estão prontos para ajudar!",
                 department="vendas",
@@ -158,7 +158,7 @@ class ChatBot:
                 options=["📞 Ver Contatos", "🔙 Voltar ao Menu"]
             )
         
-        if "suporte" in message_lower or "ajuda" in message_lower or "problema" in message_lower:
+        if message_lower == "suporte" or "🛠️ suporte" in message_lower or "ajuda" in message_lower or "problema" in message_lower:
             return ChatResponse(
                 response="🛠️ **Suporte Técnico**\n\nEstamos aqui para resolver seu problema!",
                 department="suporte",
@@ -166,7 +166,7 @@ class ChatBot:
                 options=["📞 Ver Contatos", "🔙 Voltar ao Menu"]
             )
         
-        if "contatos" in message_lower or "telefone" in message_lower:
+        if "contatos" in message_lower or "📞 contatos" in message_lower or "telefone" in message_lower:
             return ChatResponse(
                 response="📞 **Nossos Contatos**\n\n**Suporte:**\n• Dia: 61 3465-7605\n• Noite: Johnson - 61996638648\n\n**Vendas:**\n• Michael: 61998764076\n• Marcos: 61998490015\n• Yan: 61998477963\n• Adriel: 61996970993",
                 department="contatos",
