@@ -10,7 +10,7 @@ const ChatBot = () => {
   const [showDebtForm, setShowDebtForm] = useState(false);
   const [showBoletoForm, setShowBoletoForm] = useState(false);
   const [customerInfo, setCustomerInfo] = useState({
-    customerId: '',
+    cpfCnpj: '',
     value: '',
     dueDate: '',
     description: ''
