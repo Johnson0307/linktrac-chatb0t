@@ -352,8 +352,21 @@ body {
     border-radius: 15px;
   }
   
+  .logo {
+    width: 40px;
+    height: 40px;
+  }
+  
+  .logo-container {
+    gap: 10px;
+  }
+  
   .header-content h1 {
-    font-size: 1.5rem;
+    font-size: 1.3rem;
+  }
+  
+  .header-content p {
+    font-size: 0.8rem;
   }
   
   .message-content {
