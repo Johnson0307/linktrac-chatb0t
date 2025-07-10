@@ -286,6 +286,12 @@ const ChatBot = () => {
   const renderContactInfo = (contactInfo) => {
     if (!contactInfo) return null;
 
+    const formatWhatsAppNumber = (phone) => {
+      // Remove spaces and format for WhatsApp
+      const cleanPhone = phone.replace(/\s+/g, '');
+      return `https://wa.me/55${cleanPhone}`;
+    };
+
     if (Array.isArray(contactInfo)) {
       // Vendedores
       return (
@@ -293,7 +299,15 @@ const ChatBot = () => {
           <h4>📞 Contatos de Vendas:</h4>
           {contactInfo.map((contact, index) => (
             <div key={index} className="contact-item">
-              <strong>{contact.name}:</strong> {contact.phone}
+              <strong>{contact.name}:</strong>{' '}
+              <a 
+                href={formatWhatsAppNumber(contact.phone)}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="whatsapp-link"
+              >
+                📱 {contact.phone}
+              </a>
             </div>
           ))}
         </div>
@@ -304,10 +318,24 @@ const ChatBot = () => {
         <div className="contact-info">
           <h4>📞 Contatos de Suporte:</h4>
           <div className="contact-item">
-            <strong>Dia:</strong> {contactInfo.dia}
+            <strong>Dia:</strong> 
+            <a 
+              href={`tel:${contactInfo.dia}`}
+              className="phone-link"
+            >
+              📞 {contactInfo.dia}
+            </a>
           </div>
           <div className="contact-item">
-            <strong>Noite:</strong> {contactInfo.noite.name} - {contactInfo.noite.phone}
+            <strong>Noite:</strong> {contactInfo.noite.name} -{' '}
+            <a 
+              href={formatWhatsAppNumber(contactInfo.noite.phone)}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="whatsapp-link"
+            >
+              📱 {contactInfo.noite.phone}
+            </a>
           </div>
         </div>
       );
