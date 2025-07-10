@@ -134,6 +134,30 @@ class ChatBot:
     async def process_message(self, message: str, session_id: str, department: str = None):
         message_lower = message.lower()
         
+        # Department routing - check for exact matches first
+        if message_lower == "financeiro" or "💰 financeiro" in message_lower:
+            return ChatResponse(
+                response="💰 **Departamento Financeiro**\n\nEscolha uma opção:",
+                department="financeiro",
+                options=["📊 Consultar Débitos", "📋 Gerar Boleto", "🔙 Voltar ao Menu"]
+            )
+        
+        if message_lower == "vendas" or "🎯 vendas" in message_lower:
+            return ChatResponse(
+                response="🎯 **Departamento de Vendas**\n\nNossos vendedores estão prontos para ajudar!",
+                department="vendas",
+                contact_info=CONTACTS["vendedores"],
+                options=["📞 Ver Contatos", "🔙 Voltar ao Menu"]
+            )
+        
+        if message_lower == "suporte" or "🛠️ suporte" in message_lower:
+            return ChatResponse(
+                response="🛠️ **Suporte Técnico**\n\nEstamos aqui para resolver seu problema!",
+                department="suporte",
+                contact_info=CONTACTS["suporte"],
+                options=["📞 Ver Contatos", "🔙 Voltar ao Menu"]
+            )
+        
         # Initial greeting or department selection
         if not department or message_lower in ["oi", "olá", "hello", "hi", "início", "menu"]:
             return ChatResponse(
@@ -142,15 +166,15 @@ class ChatBot:
                 options=["💰 Financeiro", "🎯 Vendas", "🛠️ Suporte", "📞 Contatos"]
             )
         
-        # Department routing - check for exact matches first
-        if message_lower == "financeiro" or "💰 financeiro" in message_lower or "débito" in message_lower or "boleto" in message_lower:
+        # Other routing
+        if "débito" in message_lower or "boleto" in message_lower:
             return ChatResponse(
                 response="💰 **Departamento Financeiro**\n\nEscolha uma opção:",
                 department="financeiro",
                 options=["📊 Consultar Débitos", "📋 Gerar Boleto", "🔙 Voltar ao Menu"]
             )
         
-        if message_lower == "vendas" or "🎯 vendas" in message_lower or "produto" in message_lower or "serviço" in message_lower:
+        if "produto" in message_lower or "serviço" in message_lower:
             return ChatResponse(
                 response="🎯 **Departamento de Vendas**\n\nNossos vendedores estão prontos para ajudar!",
                 department="vendas",
@@ -158,7 +182,7 @@ class ChatBot:
                 options=["📞 Ver Contatos", "🔙 Voltar ao Menu"]
             )
         
-        if message_lower == "suporte" or "🛠️ suporte" in message_lower or "ajuda" in message_lower or "problema" in message_lower:
+        if "ajuda" in message_lower or "problema" in message_lower:
             return ChatResponse(
                 response="🛠️ **Suporte Técnico**\n\nEstamos aqui para resolver seu problema!",
                 department="suporte",
@@ -181,7 +205,7 @@ class ChatBot:
                 options=["🔙 Voltar ao Financeiro"]
             )
         
-        if "gerar boleto" in message_lower or "boleto" in message_lower:
+        if "gerar boleto" in message_lower:
             return ChatResponse(
                 response="📋 **Geração de Boleto**\n\nPara gerar um boleto, preciso das seguintes informações:\n• ID do Cliente\n• Valor\n• Data de Vencimento\n• Descrição",
                 department="financeiro_boleto",
