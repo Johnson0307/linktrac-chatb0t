@@ -320,8 +320,17 @@ const App = () => {
       <div className="chat-container">
         <div className="chat-header">
           <div className="header-content">
-            <h1>🤖 Linktrac Chatbot Suporte</h1>
-            <p>Seu assistente virtual para suporte, vendas e financeiro</p>
+            <div className="logo-container">
+              <img 
+                src="https://images.unsplash.com/photo-1679403766665-67ed6cd2df30?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2NzR8MHwxfHNlYXJjaHwxfHxjaGF0Ym90JTIwbG9nb3xlbnwwfHx8fDE3NTIxMTUyNjF8MA&ixlib=rb-4.1.0&q=85" 
+                alt="Linktrac Chatbot Logo" 
+                className="logo"
+              />
+              <div className="header-text">
+                <h1>Linktrac Chatbot Suporte</h1>
+                <p>Seu assistente virtual para suporte, vendas e financeiro</p>
+              </div>
+            </div>
           </div>
         </div>
 
