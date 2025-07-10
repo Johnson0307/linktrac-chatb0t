@@ -133,8 +133,8 @@ const ChatBot = () => {
   };
 
   const handleDebtConsultation = async () => {
-    if (!customerInfo.customerId.trim()) {
-      alert('Por favor, informe o ID do cliente');
+    if (!customerInfo.cpfCnpj.trim()) {
+      alert('Por favor, informe seu CPF ou CNPJ');
       return;
     }
 
@@ -146,7 +146,7 @@ const ChatBot = () => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          customer_id: customerInfo.customerId,
+          cpf_cnpj: customerInfo.cpfCnpj,
           session_id: sessionId
         }),
       });
@@ -166,7 +166,7 @@ const ChatBot = () => {
             resultText += `• Status: ${debt.status}\n\n`;
           });
         } else {
-          resultText += '✅ Nenhum débito encontrado para este cliente.';
+          resultText += '✅ Nenhum débito encontrado para este CPF/CNPJ.';
         }
 
         const botMessage = {
@@ -179,7 +179,7 @@ const ChatBot = () => {
 
         setMessages(prev => [...prev, botMessage]);
         setShowDebtForm(false);
-        setCustomerInfo(prev => ({ ...prev, customerId: '' }));
+        setCustomerInfo(prev => ({ ...prev, cpfCnpj: '' }));
       }
     } catch (error) {
       console.error('Error consulting debt:', error);
