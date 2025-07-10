@@ -411,9 +411,9 @@ const ChatBot = () => {
             <h3>📊 Consulta de Débitos</h3>
             <input
               type="text"
-              placeholder="ID do Cliente"
-              value={customerInfo.customerId}
-              onChange={(e) => setCustomerInfo(prev => ({ ...prev, customerId: e.target.value }))}
+              placeholder="CPF ou CNPJ"
+              value={customerInfo.cpfCnpj}
+              onChange={(e) => setCustomerInfo(prev => ({ ...prev, cpfCnpj: e.target.value }))}
               className="form-input"
             />
             <button
@@ -432,9 +432,9 @@ const ChatBot = () => {
             <h3>📋 Geração de Boleto</h3>
             <input
               type="text"
-              placeholder="ID do Cliente *"
-              value={customerInfo.customerId}
-              onChange={(e) => setCustomerInfo(prev => ({ ...prev, customerId: e.target.value }))}
+              placeholder="CPF ou CNPJ *"
+              value={customerInfo.cpfCnpj}
+              onChange={(e) => setCustomerInfo(prev => ({ ...prev, cpfCnpj: e.target.value }))}
               className="form-input"
             />
             <input
