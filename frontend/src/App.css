@@ -364,6 +364,30 @@ body {
   color: #333;
 }
 
+.whatsapp-link {
+  color: #25D366;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s ease;
+}
+
+.whatsapp-link:hover {
+  color: #128C7E;
+  text-decoration: underline;
+}
+
+.phone-link {
+  color: #667eea;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s ease;
+}
+
+.phone-link:hover {
+  color: #764ba2;
+  text-decoration: underline;
+}
+
 .form-container {
   background: white;
   padding: 20px;
