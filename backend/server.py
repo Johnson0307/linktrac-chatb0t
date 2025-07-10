@@ -68,11 +68,11 @@ class ChatResponse(BaseModel):
     contact_info: Optional[dict] = None
 
 class DebtConsultationRequest(BaseModel):
-    customer_id: str
+    cpf_cnpj: str
     session_id: str
 
 class BoletoRequest(BaseModel):
-    customer_id: str
+    cpf_cnpj: str
     value: float
     due_date: str
     description: str
