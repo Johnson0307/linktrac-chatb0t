@@ -196,7 +196,7 @@ const ChatBot = () => {
   };
 
   const handleBoletoGeneration = async () => {
-    if (!customerInfo.customerId.trim() || !customerInfo.value || !customerInfo.dueDate) {
+    if (!customerInfo.cpfCnpj.trim() || !customerInfo.value || !customerInfo.dueDate) {
       alert('Por favor, preencha todos os campos obrigatórios');
       return;
     }
@@ -209,7 +209,7 @@ const ChatBot = () => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          customer_id: customerInfo.customerId,
+          cpf_cnpj: customerInfo.cpfCnpj,
           value: parseFloat(customerInfo.value),
           due_date: customerInfo.dueDate,
           description: customerInfo.description || 'Cobrança Linktrac',
@@ -246,7 +246,7 @@ const ChatBot = () => {
         setMessages(prev => [...prev, botMessage]);
         setShowBoletoForm(false);
         setCustomerInfo({
-          customerId: '',
+          cpfCnpj: '',
           value: '',
           dueDate: '',
           description: ''
