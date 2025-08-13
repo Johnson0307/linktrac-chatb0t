@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>LINKTRAC - Consulta de Boletos</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f0f4f8;
+      color: #333;
+      padding: 20px;
+    }
+    header {
+      background-color: #e0f0ff;
+      padding: 15px;
+      text-align: center;
+      border-radius: 8px;
+      margin-bottom: 20px;
+    }
+    header h1 {
+      margin: 10px 0;
+      color: #004d80;
+    }
+    #logo-placeholder {
+      width: 120px;
+      height: 120px;
+      background-color: #d9e6f2;
+      border: 2px dashed #aacbe2;
+      margin: 0 auto 10px auto;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #7aa6c7;
+      font-size: 14px;
+    }
+    input, button {
+      padding: 10px;
+      margin: 5px;
+      font-size: 16px;
+    }
+    button {
+      background-color: #007acc;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #005fa3;
+    }
+    #resultado {
+      background-color: #ffffff;
+      border-radius: 8px;
+      padding: 15px;
+      margin-top: 20px;
+      box-shadow: 0 0 5px rgba(0,0,0,0.1);
+    }
+    footer {
+      text-align: center;
+      margin-top: 40px;
+      color: #888;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div id="logo-placeholder">LOGO</div>
+    <h1>LINKTRAC - Consulta Financeira</h1>
+    <p>Digite o CPF ou CNPJ do cliente para buscar boletos no Asaas</p>
+  </header>
+
+  <label for="apiKey">🔐 Cole sua Chave da API do Asaas:</label><br>
+  <input type="text" id="apiKey" placeholder="Ex: live_xxxxxxxxxxxxxxxxxxxxx" size="50"><br><br>
+
+  <input type="text" id="cpfCnpj" placeholder="Digite o CPF ou CNPJ" size="30" />
+  <button onclick="buscarCliente()">🔍 Buscar Boletos</button>
+
+  <div id="resultado"></div>
+
+  <footer>Atendimento LINKTRAC</footer>
+
+  <script>
+    async function buscarCliente() {
+      const cpfCnpj = document.getElementById('cpfCnpj').value.trim();
+      const apiKey = document.getElementById('apiKey').value.trim();
+      const resultado = document.getElementById('resultado');
+      resultado.innerHTML = '⏳ Buscando cliente...';
+
+      if (!apiKey || !cpfCnpj) {
+        resultado.innerHTML = '❌ Preencha a chave da API e o CPF/CNPJ.';
+        return;
+      }
+
+      const headers = { 'access_token': apiKey };
+
+      try {
+        const resCliente = await fetch(`https://www.asaas.com/api/v3/customers?cpfCnpj=${cpfCnpj}`, {
+          headers
+        });
+        const dadosCliente = await resCliente.json();
+        const cliente = dadosCliente.data[0];
+
+        if (!cliente) {
+          resultado.innerHTML = '❌ Cliente não encontrado.';
+          return;
+        }
+
+        const resCobrancas = await fetch(`https://www.asaas.com/api/v3/payments?customer=${cliente.id}`, {
+          headers
+        });
+        const cobrancas = await resCobrancas.json();
+
+        if (cobrancas.data.length === 0) {
+          resultado.innerHTML = '✅ Cliente localizado, mas sem boletos.';
+          return;
+        }
+
+        let html = `<h3>Cliente: ${cliente.name}</h3>`;
+        cobrancas.data.forEach((c) => {
+          html += `
+            <p>
+              💳 <strong>Boleto:</strong> ${c.description}<br>
+              💰 <strong>Valor:</strong> R$ ${c.value}<br>
+              📆 <strong>Vencimento:</strong> ${new Date(c.dueDate).toLocaleDateString()}<br>
+              🟡 <strong>Status:</strong> ${c.status}<br>
+              🔗 <a href="${c.invoiceUrl}" target="_blank">2ª via do boleto</a>
+            </p><hr>
+          `;
+        });
+
+        resultado.innerHTML = html;
+
+      } catch (err) {
+        resultado.innerHTML = '⚠️ Erro na consulta. Verifique os dados e sua conexão.';
+      }
+    }
+  </script>
+</body>
+</html>
